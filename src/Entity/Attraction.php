@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AttractionRepository::class)
+ * @UniqueEntity(fields={"user1","user2"})
  */
 class Attraction
 {
