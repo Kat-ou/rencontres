@@ -5,7 +5,7 @@ namespace App\Utils;
 
 
 use App\Repository\BannedWordRepository;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 class Censurator
 {
