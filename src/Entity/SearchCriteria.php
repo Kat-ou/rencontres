@@ -23,10 +23,6 @@ class SearchCriteria
      */
     private $user;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $contenu;
 
     public function getId(): ?int
     {
@@ -45,15 +41,4 @@ class SearchCriteria
         return $this;
     }
 
-    public function getContenu(): ?string
-    {
-        return $this->contenu;
-    }
-
-    public function setContenu(string $contenu): self
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
 }

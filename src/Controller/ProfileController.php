@@ -58,11 +58,9 @@ class ProfileController extends AbstractController
             $profile->setDateUpdated(new \DateTime());
             $profile->setUser($this->getUser());
         }
-        $profilePicture = $profile->getProfilePictures();
-        if ( isNull($profilePicture)) {
+
             $profilePicture = new ProfilePicture();
-        }
-        dd($profilePicture);
+
         $profilePictureForm = $this->createForm(ProfilPictureType::class, $profilePicture);
         $profilePictureForm->handleRequest($request);
 
