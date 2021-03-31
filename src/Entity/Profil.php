@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProfilRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +58,16 @@ class Profil
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateUpdated;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProfilePicture::class, mappedBy="profil")
+     */
+    private $profilePictures;
+
+    public function __construct()
+    {
+        $this->profilePictures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -159,6 +171,36 @@ class Profil
     public function setDateUpdated(?\DateTimeInterface $dateUpdated): self
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProfilePicture[]
+     */
+    public function getProfilePictures(): Collection
+    {
+        return $this->profilePictures;
+    }
+
+    public function addProfilePicture(ProfilePicture $profilePicture): self
+    {
+        if (!$this->profilePictures->contains($profilePicture)) {
+            $this->profilePictures[] = $profilePicture;
+            $profilePicture->setProfil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfilePicture(ProfilePicture $profilePicture): self
+    {
+        if ($this->profilePictures->removeElement($profilePicture)) {
+            // set the owning side to null (unless already changed)
+            if ($profilePicture->getProfil() === $this) {
+                $profilePicture->setProfil(null);
+            }
+        }
 
         return $this;
     }

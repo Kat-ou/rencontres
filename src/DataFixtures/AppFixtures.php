@@ -77,7 +77,6 @@ class AppFixtures extends Fixture
             $manager->persist($attraction);
         }
 
-
         $manager->flush();
 
     }
