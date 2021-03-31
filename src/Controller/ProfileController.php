@@ -35,7 +35,7 @@ class ProfileController extends AbstractController
 
         $profileForm->handleRequest($request);
 
-        if ($profileForm->isValid() && $profileForm->isSubmitted()){
+        if ($profileForm->isSubmitted() && $profileForm->isValid() ){
 
         }
 
