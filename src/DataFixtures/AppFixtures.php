@@ -43,7 +43,11 @@ class AppFixtures extends Fixture
         foreach ($users as $user) {
             $profil = new Profil();
             $profil->setDescription($faker->text);
-            $profil->setPostalCode($faker->postcode);
+            $postCode = $faker->numberBetween(01000,99999);
+            if ($postCode < 10000){
+                $postCode = 0 . $postCode;
+            }
+            $profil->setPostalCode($postCode);
             $profil->setTown($faker->city);
             $profil->setBirthDate($faker->dateTimeBetween('-70 years', '-18 years'));
             $profil->setSex($faker->randomElement($sexes));
