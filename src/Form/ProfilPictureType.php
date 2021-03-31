@@ -13,8 +13,6 @@ class ProfilPictureType extends AbstractType
     {
         $builder
             ->add('filename')
-            ->add('dateCreated')
-            ->add('profil')
         ;
     }
 
