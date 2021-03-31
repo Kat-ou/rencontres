@@ -32,32 +32,38 @@
                         Accueil
                     </a>
 
-                    <a class="navbar-item">
-                        Todo
+
+                    {% if (app.user) %}
+                    <a class="navbar-item" href="{{ path('profile_update',{'userId':app.user.id}) }}">
+                        Profil
                     </a>
                 </div>
-
                 <div class="navbar-end">
-                    <div class="navbar-item">
 
-                        {% if (app.user) %}
+                    <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary" href="{{ path('app_logout') }}">Logout ({{ app.user.username }})</a>
+                            <a class="button is-primary" href="{{ path('app_logout') }}">Logout
+                                ({{ app.user.username }})</a>
                         </div>
 
                         {% else %}
-                        <div class="buttons">
-                            <a class="button is-primary" href="{{ path('app_register') }}">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a class="button is-light" href="{{ path('app_login') }}">
-                                Log in
-                            </a>
+
+                    </div>
+                    <div class="navbar-end">
+
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="button is-primary" href="{{ path('app_register') }}">
+                                    <strong>Sign up</strong>
+                                </a>
+                                <a class="button is-light" href="{{ path('app_login') }}">
+                                    Log in
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                 </div>
-            </div>
         </nav>
     </div>
 </header>
