@@ -11,7 +11,7 @@ class CensuratorTest extends TestCase
     {
         $censurator = new Censurator();
         $purified = $censurator->purify("pif paf pouf pouet");
-        $this->assertEquals( "pif paf p***** pouet",$purified);
+        $this->assertEquals( "pif paf p*** pouet",$purified);
 
     }
 }

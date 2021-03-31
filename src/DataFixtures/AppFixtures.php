@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Attraction;
+use App\Entity\BannedWord;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -37,7 +38,7 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
-        $users = $manager->getRepository(UserRepository::class)->findAll();
+        $users = $manager->getRepository(User::class)->findAll();
         $sexes = ['F', 'M', 'O'];
         foreach ($users as $user) {
             $profil = new Profil();
