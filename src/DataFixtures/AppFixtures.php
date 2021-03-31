@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
         foreach ($users as $user) {
             $profil = new Profil();
             $profil->setDescription($faker->text);
-            $postCode = $faker->numberBetween(01000,99999);
+            $postCode = $faker->numberBetween(100,9599)*10;
             if ($postCode < 10000){
                 $postCode = 0 . $postCode;
             }

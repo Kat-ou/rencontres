@@ -70,7 +70,7 @@ class ProfileController extends AbstractController
         }
 
 
-        $searchCriteria = $profile->getUser()->getSearchCriterias();
+        $searchCriteria = $profile->getUser()->getSearchCriteria();
         if ($searchCriteria == null) {
             $searchCriteria = new SearchCriteria();
         }
