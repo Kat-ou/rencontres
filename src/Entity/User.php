@@ -59,12 +59,6 @@ class User implements UserInterface
      */
     private $dateUpdated;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=SearchCriteria::class, mappedBy="user")
-     */
-    private $searchCriterias;
-
     /**
      * @ORM\OneToMany(targetEntity=Attraction::class, mappedBy="user1")
      */
@@ -74,6 +68,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Attraction::class, mappedBy="user2")
      */
     private $attractionsReceived;
+
+    /**
+     * @ORM\OneToOne(targetEntity=SearchCriteria::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $searchCriteria;
 
     public function __construct()
     {
@@ -202,36 +201,7 @@ class User implements UserInterface
 
         return $this;
     }
-
-    /**
-     * @return Collection|SearchCriteria[]
-     */
-    public function getSearchCriterias(): Collection
-    {
-        return $this->searchCriterias;
-    }
-
-    public function addSearchCriteria(SearchCriteria $searchCriteria): self
-    {
-        if (!$this->searchCriterias->contains($searchCriteria)) {
-            $this->searchCriterias[] = $searchCriteria;
-            $searchCriteria->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSearchCriteria(SearchCriteria $searchCriteria): self
-    {
-        if ($this->searchCriterias->removeElement($searchCriteria)) {
-            // set the owning side to null (unless already changed)
-            if ($searchCriteria->getUser() === $this) {
-                $searchCriteria->setUser(null);
-            }
-        }
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|Attraction[]
@@ -289,6 +259,18 @@ class User implements UserInterface
                 $attractionsReceived->setUser2(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSearchCriteria(): ?SearchCriteria
+    {
+        return $this->searchCriteria;
+    }
+
+    public function setSearchCriteria(?SearchCriteria $searchCriteria): self
+    {
+        $this->searchCriteria = $searchCriteria;
 
         return $this;
     }
