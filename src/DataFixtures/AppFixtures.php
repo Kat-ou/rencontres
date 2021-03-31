@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         $users = $manager->getRepository(User::class)->findAll();
-        $sexes = ['F', 'M', 'O'];
+        $sexes = ['F', 'H', 'A'];
         foreach ($users as $user) {
             $profil = new Profil();
             $profil->setDescription($faker->text);

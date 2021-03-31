@@ -37,46 +37,75 @@ class ProfileController extends AbstractController
     {
 
         $user = $this->getUser();
-        $profileForm = $this->createForm(RegistrationFormType::class, $user);
 
+        $loginForm = $this->createForm(RegistrationFormType::class, $user);
         $loginForm->handleRequest($request);
 
-        if ($profileForm->isSubmitted() && $profileForm->isValid() ){
+        if ($loginForm->isSubmitted() && $loginForm->isValid()) {
+            $entityManager->persist($user);
 
         }
 
-        $profile = new Profil();
+        $profile = $user->getProfil();
+        if ($profile == null) {
+            $profile = $this->initProfile();
+        }
+
         $profileForm = $this->createForm(ProfileType::class, $profile);
         $profileForm->handleRequest($request);
 
-        if ($profileForm->isSubmitted() && $profileForm->isValid() ){
-
+        if ($profileForm->isSubmitted() && $profileForm->isValid()) {
+            $profile->setDateUpdated(new \DateTime());
+            $profile->setUser($this->getUser());
         }
-
-        $profilePicture = new ProfilePicture();
+        $profilePicture = $profile->getProfilePictures();
+        if ( isNull($profilePicture)) {
+            $profilePicture = new ProfilePicture();
+        }
+        dd($profilePicture);
         $profilePictureForm = $this->createForm(ProfilPictureType::class, $profilePicture);
         $profilePictureForm->handleRequest($request);
 
-        if ($profileForm->isSubmitted() && $profileForm->isValid() ){
-
-
-        $searchCritera = new SearchCriteria();
-        $searchCriteraForm = $this->createForm(SearchCriteriaType::class, $searchCritera);
-        $searchCriteraForm->handleRequest($request);
-
+        if ($profilePictureForm->isSubmitted() && $profilePictureForm->isValid()) {
+            $profilePicture->setProfil($profile);
+            $profilePicture->setDateCreated(new \DateTime());
         }
-        if ($profileForm->isSubmitted() && $profileForm->isValid() ){
 
+
+        $searchCriteria = $profile->getUser()->getSearchCriterias();
+        if ($searchCriteria == null) {
+            $searchCriteria = new SearchCriteria();
         }
+
+        $searchCriteriaForm = $this->createForm(SearchCriteriaType::class, $searchCriteria);
+        $searchCriteriaForm->handleRequest($request);
+
+
+        if ($searchCriteriaForm->isSubmitted() && $searchCriteriaForm->isValid()) {
+            $searchCriteria->setUser($this->getUser());
+        }
+
+        $entityManager->flush();
 
         return $this->render('profile/profile.html.twig', [
             'userId' => $userId,
             'profileForm' => $profileForm->createView(),
             'profilePictureForm' => $profilePictureForm->createView(),
-            'searchCriteraForm' => $searchCriteraForm->createView(),
+            'searchCriteriaForm' => $searchCriteriaForm->createView(),
         ]);
     }
 
-    public function
+    public function initProfile()
+    {
+        $newProfile = new Profil();
+        $newProfile->setUser($this->getUser());
+        $newProfile->setBirthDate(new \DateTime());
+        $newProfile->setSex('M');
+        $newProfile->setDateCreated(new \DateTime());
+        $newProfile->setPostalCode('00000');
+        $newProfile->setTown('Votre ville');
+
+        return $newProfile;
+    }
 
 }
