@@ -18,6 +18,14 @@ class AppFixtures extends Fixture
 
         $faker = \Faker\Factory::create("fr_FR");
 
+        $bannedWords = ['putain','con','pute','pouffe','pouf','poufiase','pouffy','poufyase','pouffyase','cul','enculé','en cule','ntm','nique ta mère','enfoiré','pédé','pd','salot','mbdtc','fu','fuck','fucker','facka','maddafacka (<3)','bitch','biatch','motherfucker','fum','ass','asshole','fucking','fils de pute','fdp','bite','fuckoff','fuq','fuqa','pute','pouffe','pouf','poufiase','pouffy','poufyase','pouffyase','cul','enculé','en cule','ntm','nique ta mère','enfoiré','pédé','pd','salot','mbdtc','fu','fuck','fucker','facka','maddafacka (<3)','bitch','biatch','motherfucker','fum','ass','asshole','fucking','fils de pute','fdp','bite','fuckoff','fuq','fuqa'];
+
+        foreach ($bannedWords as $bannedWord){
+            $word = new BannedWord();
+            $word->setWord($bannedWord);
+            $manager->persist($word);
+        }
+
         for ($i = 0; $i < 100; $i++) {
             $user = new User();
             $user->setUsername($faker->userName);
