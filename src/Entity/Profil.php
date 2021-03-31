@@ -61,6 +61,7 @@ class Profil
 
     /**
      * @ORM\OneToMany(targetEntity=ProfilePicture::class, mappedBy="profil")
+     * * @ORM\Column(nullable=true)
      */
     private $profilePictures;
 

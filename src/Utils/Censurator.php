@@ -23,8 +23,8 @@ class Censurator
     public function purify( string $chaineDeBase ) : string
     {
         //Façon 1
-        $censoredWords = $this->getCensoredWords();
-        $result = str_ireplace($censoredWords,'***',$chaineDeBase);
+        //$censoredWords = $this->getCensoredWords();
+        //$result = str_ireplace($censoredWords,'***',$chaineDeBase);
 
         //Façon 2
         $result = $this->replaceBannedWords($chaineDeBase);
