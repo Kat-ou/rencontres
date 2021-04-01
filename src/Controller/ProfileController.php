@@ -13,6 +13,7 @@ use App\Repository\ProfilePictureRepository;
 use App\Repository\ProfilRepository;
 use App\Repository\SearchCriteriaRepository;
 use App\Repository\UserRepository;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -78,9 +79,18 @@ class ProfileController extends AbstractController
             //upload_dir est défini dans config/services.yaml
             $uploadedFile->move($this->getParameter('upload_dir'),$newFileName);
 
+            //redimensionne l'image
+            $simpleImage = new SimpleImage();
+            $simpleImage->fromFile($this->getParameter('upload_dir')."/$newFileName")
+                ->bestFit(300,300);
+
+            //hydrate et sauvegarde les données de l'image
             $profilePicture->setFilename($newFileName);
-            $profilePicture->setProfil($profile);
             $profilePicture->setDateCreated(new \DateTime());
+
+            // associe cette image à l'utilisateur connecté
+            $profilePicture->setProfil($profile);
+
             $entityManager->persist($profilePicture);
             $entityManager->flush($profilePicture);
         }
