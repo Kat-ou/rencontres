@@ -45,6 +45,7 @@ class ProfileController extends AbstractController
         $loginForm->handleRequest($request);
 
         if ($loginForm->isSubmitted() && $loginForm->isValid()) {
+
             $entityManager->persist($user);
 
         }
@@ -60,9 +61,10 @@ class ProfileController extends AbstractController
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $profile->setDateUpdated(new \DateTime());
             $profile->setUser($this->getUser());
+            $entityManager->persist($profile);
         }
 
-            $profilePicture = new ProfilePicture();
+        $profilePicture = new ProfilePicture();
 
         $profilePictureForm = $this->createForm(ProfilPictureType::class, $profilePicture);
         $profilePictureForm->handleRequest($request);
@@ -77,12 +79,12 @@ class ProfileController extends AbstractController
 
             //déplace le fichier dans mon répertoire public avant sa destruction
             //upload_dir est défini dans config/services.yaml
-            $uploadedFile->move($this->getParameter('upload_dir'),$newFileName);
+            $uploadedFile->move($this->getParameter('upload_dir'), $newFileName);
 
             //redimensionne l'image
             $simpleImage = new SimpleImage();
-            $simpleImage->fromFile($this->getParameter('upload_dir')."/$newFileName")
-                ->bestFit(300,300);
+            $simpleImage->fromFile($this->getParameter('upload_dir') . "/$newFileName")
+                ->bestFit(300, 300);
 
             //hydrate et sauvegarde les données de l'image
             $profilePicture->setFilename($newFileName);
@@ -92,7 +94,6 @@ class ProfileController extends AbstractController
             $profilePicture->setProfil($profile);
 
             $entityManager->persist($profilePicture);
-            $entityManager->flush($profilePicture);
         }
 
 
