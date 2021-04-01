@@ -15,9 +15,11 @@ use App\Repository\SearchCriteriaRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\ByteString;
 
 /**
  * @Route ("/profile", name="profile_")
@@ -65,8 +67,22 @@ class ProfileController extends AbstractController
         $profilePictureForm->handleRequest($request);
 
         if ($profilePictureForm->isSubmitted() && $profilePictureForm->isValid()) {
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $profilePictureForm->get('pic')->getData();
+
+            //génère un nom de fichier sécurisé de 30 caractères
+            $newFileName = ByteString::fromRandom(30) . "." . $uploadedFile->guessExtension();
+
+            //déplace le fichier dans mon répertoire public avant sa destruction
+            //upload_dir est défini dans config/services.yaml
+            $uploadedFile->move($this->getParameter('upload_dir'),$newFileName);
+
+            $profilePicture->setFilename($newFileName);
             $profilePicture->setProfil($profile);
             $profilePicture->setDateCreated(new \DateTime());
+            $entityManager->persist($profilePicture);
+            $entityManager->flush($profilePicture);
         }
 
 
